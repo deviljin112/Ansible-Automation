@@ -72,12 +72,13 @@ To create a playbook, we need to create a new file that is followed by `.yaml` f
 Afterwards we can begin making our `tasks:`. An example of a simple task is to get the `sudo apt update` and `sudo apt upgrade` to be executed on our host machine.
 
 ```yaml
-- name: Running APT Update && Upgrade
-  apt:
-    upgrade: "yes"
-    update_cache: yes
-    force_apt_get: yes
-    cache_valid_time: 3600
+tasks:
+  - name: Running APT Update && Upgrade
+    apt:
+      upgrade: "yes"
+      update_cache: yes
+      force_apt_get: yes
+      cache_valid_time: 3600
 ```
 
 Here we use a list object with `-` and give our task a name, followed by what ansible module we would like to use. As we are trying to use the ubuntu's package manager, ansible has a module called `apt`. We can then specify the arguments of that module found in the official documentation. Rather than writing the command we can explicitly state all the parameters of the command and this way our ansible is more flexibile as to what system it can run on. If we used `sudo apt update` we would not be able to run that same command on CentOS or Fedora. However, ansible knows what we would like to achieve and is OS-aware therefore, it will run the respective command on the system it's being used on.
