@@ -198,7 +198,7 @@ testing...
 {{ variable_2 }}
 ```
 
-Output of the main template file
+output.txt
 
 ```txt
 First Variable
