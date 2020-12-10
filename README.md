@@ -83,7 +83,7 @@ tasks:
 
 Here we use a list object with `-` and give our task a name, followed by what ansible module we would like to use. As we are trying to use the ubuntu's package manager, ansible has a module called `apt`. We can then specify the arguments of that module found in the official documentation. Rather than writing the command we can explicitly state all the parameters of the command and this way our ansible is more flexibile as to what system it can run on. If we used `sudo apt update` we would not be able to run that same command on CentOS or Fedora. However, ansible knows what we would like to achieve and is OS-aware therefore, it will run the respective command on the system it's being used on.
 
-## Task
+## Task 1
 
 Check uptime of the machine
 
@@ -124,4 +124,115 @@ Returned:
         "0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded."
     ]
 }
+```
+
+## Task 2
+
+*How to copy within the host machine*
+
+```yaml
+- name: Copying a file within the host machine
+  copy:
+    src: "/home/ubuntu/old_folde/file.md"
+    dest: /home/ubuntu/new_folder/copied_file.md
+    remote_src: yes
+```
+
+*How to synchronize a folder between host and controller*
+
+```yaml
+- synchronize:
+    src: "/home/ubuntu/local_folder/"
+    dest: "/home/ubuntu/remote_folder/"
+```
+
+*How to make a file inside of the host machine*
+
+```yaml
+- name: Making an empty file with permissions
+  file:
+    path: /home/ubuntu/some_folder/empty_file.md
+    state: touch
+    mode: '0755'
+```
+
+*How to start / restart a service*
+
+```yaml
+- name: Ensuring nginx is started
+  service:
+    name: nginx
+    state: started
+```
+
+*How to change a line in a file*
+
+```yaml
+- name: Ensuring public IP is current
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: "^(.*)server_name(.*)$"
+    line: "server_name 192.168.0.1;"
+    backrefs: yes
+```
+
+*How to use templates*
+
+```yaml
+vars:
+  variable_1: 'First Variable'
+  variable_2: 'Second Variable'
+
+tasks:
+  - name: Template Example
+    template:
+      src: some_file.j2
+      dest: /home/ubuntu/some_folder/output.txt
+```
+
+some_file.j2
+
+```j2
+{{ variable_1 }}
+testing...
+{{ variable_2 }}
+```
+
+Output of the main template file
+
+```txt
+First Variable
+testing...
+Second Variable
+```
+
+*How to use Handlers and Notifications*
+
+```yaml
+tasks:
+  - name: Copying config file for nginx
+    copy:
+      src: "/home/ubuntu/{{ app_destination }}/config_files/nginx.conf"
+      dest: /etc/nginx/
+      remote_src: yes
+    notify:
+      - Restarting Nginx
+
+handlers:
+  - name: Restarting Nginx
+    service:
+      name: nginx
+      state: restarted
+```
+
+*How to run shell commands*
+
+```yaml
+- name: Getting Public IP
+  command: "curl ifconfig.me"
+
+# Alternative version
+
+- name: Getting Public IP
+  shell: "curl ifconfig.me"
 ```
