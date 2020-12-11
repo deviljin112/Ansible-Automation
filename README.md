@@ -176,6 +176,19 @@ Returned:
     backrefs: yes
 ```
 
+*How to use variables*
+
+```yaml
+vars:
+  variable_1: 'First Variable'
+  variable_2: 'Second Variable'
+
+tasks:
+  - name: Copy a file
+    src: {{ variable_1 }}/some_file.md
+    dest: {{ variable_2 }}/some_file.md
+```
+
 *How to use templates*
 
 ```yaml
