@@ -10,7 +10,7 @@
     # This is where the NodeJS app files are stored on the Host machine
     app_destination: "NodeJS_App"
     # This is the Private IP address of the database machine
-    database_address: "172.31.35.103"
+    database_address: "172.31.42.113"
 
   tasks:
     - synchronize:
@@ -82,7 +82,7 @@
         path: "/home/ubuntu/{{ app_destination }}/app/"
     - name: Starting app.js
       command:
-        cmd: pm2 start app.js
+        cmd: pm2 start app.js --update-env
         chdir: "/home/ubuntu/{{ app_destination }}/app/"
       become: true
       become_user: ubuntu
