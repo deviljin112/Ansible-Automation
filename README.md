@@ -236,3 +236,16 @@ handlers:
 - name: Getting Public IP
   shell: "curl ifconfig.me"
 ```
+
+*How to call a playbook from another playbook*
+
+```yaml
+- include: playbook_1.yaml
+  vars:
+    first_var: true
+    second_var: 123.123.123.123
+
+- include: playbook_2.yaml
+  vars:
+    third_var: 10
+```
